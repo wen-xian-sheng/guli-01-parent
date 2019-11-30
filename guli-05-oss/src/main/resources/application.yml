@@ -1,0 +1,24 @@
+#端口号
+server:
+    port: 8083
+
+#微服务名称
+spring:
+    application:
+        name: guli-aliyunoss
+
+#
+profiles:
+    active: dev
+
+
+#
+aliyun:
+    oss:
+        file:
+            endpoint: oss-cn-shenzhen.aliyuncs.com
+            keyid: LTAI4FtTvT6tdfZreR41jRB3
+            keysecret: uobFEKn1Qkc5WBhbQ57OT1oCFdXD08
+            #bucket
+            bucketname: 0615guli
+            filehost: avatar

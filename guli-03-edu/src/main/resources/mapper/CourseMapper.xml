@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.guli.mapper.CourseMapper">
+
+<!--    根据courseId回显发布的信息-->
+    <select id="selectCoursePublishByCourseId" parameterType="String" resultType="java.util.Map">
+        SELECT
+            co.id id,
+            co.cover cover,
+            co.title title,
+            co.lesson_num lessonNum,
+            CONVERT(co.price,DECIMAL(10,2)) price,
+            sub1.title subjectLevelOne,
+            sub2.title subjectLevelTwo,
+            te.`name` teacherName
+        FROM
+            edu_course co
+        LEFT JOIN edu_subject sub1 ON co.subject_parent_id = sub1.id
+        LEFT JOIN edu_subject sub2 ON co.subject_id = sub2.id
+        LEFT JOIN edu_teacher te ON co.teacher_id = te.id
+        WHERE
+            co.id = #{courseId}
+    </select>
+
+<!--    根据courseId修改发布状态-->
+    <update id="updateCourseStatus" parameterType="String">
+        UPDATE edu_course
+        SET `status` = 'Normal'
+        WHERE
+            id = #{courseId}
+    </update>
+
+<!--根据courseId查找课程的基本信息，章节，主讲师-->
+    <select id="getAllAboutCourseInfoByCourseId" parameterType="String" resultType="java.util.Map">
+        SELECT
+            s1.title subjectLevelOne,
+            s2.title subjectLevelTwo,
+            c.id id,
+            c.cover cover,
+            c.title title,
+            c.teacher_id teacherId,
+            c.buy_count buyCount,
+            c.price price,
+            c.lesson_num lessonNum,
+            c.view_count viewwCount,
+            cd.description description,
+            t. NAME teacherName,
+            t.avatar avatar,
+            t.intro intro
+        FROM
+            edu_course c
+        LEFT JOIN edu_subject s1 ON c.subject_parent_id = s1.id
+        LEFT JOIN edu_subject s2 ON c.subject_id = s2.id
+        LEFT JOIN edu_course_description cd ON c.id = cd.id
+        LEFT JOIN edu_teacher t ON c.teacher_id = t.id
+        WHERE
+            c.id = #{courseId}
+    </select>
+
+</mapper>
